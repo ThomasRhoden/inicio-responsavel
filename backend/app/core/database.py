@@ -9,6 +9,8 @@ import sys
 ROOT_DIR = Path(__file__).resolve().parents[3]
 load_dotenv(ROOT_DIR / ".env")
 
+# Configurações de conexão de banco de dados.
+# A prioridade é ler variáveis de ambiente do arquivo .env.
 DB_HOST     = os.getenv("DB_HOST", "localhost")
 DB_PORT     = os.getenv("DB_PORT", "3306")
 DB_NAME     = os.getenv("DB_NAME", "inicio_responsavel")
@@ -17,7 +19,7 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 DB_SQLITE = os.getenv("DB_SQLITE", "")
 
 if DB_SQLITE:
-    # Use a local sqlite file for development when DB_SQLITE is set
+    # Usa arquivo SQLite local para desenvolvimento quando DB_SQLITE está definido.
     DATABASE_URL = f"sqlite:///{DB_SQLITE}"
     engine = create_engine(DATABASE_URL, echo=False, connect_args={"check_same_thread": False})
 else:
@@ -26,12 +28,12 @@ else:
         f"@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
     )
     engine = create_engine(DATABASE_URL, echo=False)
-    # testar conexão imediata e cair para sqlite se falhar
+    # Testar a conexão MySQL imediatamente e usar SQLite se falhar.
     try:
         conn = engine.connect()
         conn.close()
     except OperationalError:
-        # fallback automático para sqlite dev
+        # Fallback automático para SQLite local em modo de desenvolvimento.
         fallback = ROOT_DIR / "backend" / "dev.sqlite3"
         DATABASE_URL = f"sqlite:///{fallback}"
         engine = create_engine(DATABASE_URL, echo=False, connect_args={"check_same_thread": False})
@@ -42,7 +44,8 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 class Base(DeclarativeBase):
     pass
 
-# Dependency para injetar sessão nas rotas
+# Função de dependência FastAPI que fornece uma sessão de banco de dados
+# e garante que ela seja fechada ao final da requisição.
 def get_db():
     db = SessionLocal()
     try:

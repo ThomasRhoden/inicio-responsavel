@@ -10,6 +10,8 @@ from app.services.gamificacao_service import conceder_conquista, ensure_default_
 
 router = APIRouter()
 
+# Rotas para gerenciar lembretes do usuário.
+# A listagem retorna todos os lembretes salvos no banco.
 @router.get("/", response_model=list[LembreteRead])
 def listar_lembretes(db: Session = Depends(get_db)):
     lembretes = db.query(Lembrete).all()
@@ -17,6 +19,7 @@ def listar_lembretes(db: Session = Depends(get_db)):
 
 @router.post("/", response_model=LembreteRead)
 def criar_lembrete(lembrete: LembreteCreate, db: Session = Depends(get_db)):
+    # Garante que as conquistas padrão existem antes de criar o lembrete.
     ensure_default_conquistas(db)
     novo = Lembrete(
         titulo=lembrete.titulo,
@@ -30,7 +33,7 @@ def criar_lembrete(lembrete: LembreteCreate, db: Session = Depends(get_db)):
     db.add(novo)
     db.commit()
     db.refresh(novo)
-    # conceder primeira conquista se aplicável
+    # Ao criar o primeiro lembrete, tentamos conceder a conquista de primeiro lembrete.
     try:
         conceder_conquista(db, 1, "primeiro_lembrete")
     except Exception:

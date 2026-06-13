@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, Date, Enum, DateTime, func
 
 from ..core.database import Base
 
+# Modelo de lembrete que representa tarefas e notas do usuário.
 class Lembrete(Base):
     __tablename__ = "lembretes"
 

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
+# Esquema de dados para criação de usuário.
 class UsuarioCreate(BaseModel):
     nome: str
     email: EmailStr
@@ -9,6 +10,7 @@ class UsuarioCreate(BaseModel):
     renda_mensal: Optional[float] = None
     area_interesse: Optional[str] = None
 
+# Esquema de dados de leitura de usuário.
 class UsuarioRead(BaseModel):
     id: int
     nome: str

@@ -1,5 +1,13 @@
-import urllib.request, json, urllib.error
+"""Script de teste simples para chamar os endpoints do backend.
 
+Use este script para verificar se o servidor FastAPI responde corretamente
+a criação de usuário, gamificação, simulação e lembretes.
+"""
+
+import urllib.request, json, urllib.error
+import time
+
+# Envia requisição POST com corpo JSON para o backend.
 def post(url, data):
     req = urllib.request.Request(url, data=json.dumps(data).encode('utf-8'), headers={'Content-Type':'application/json'}, method='POST')
     try:
@@ -26,8 +34,9 @@ def get(url):
 
 if __name__ == '__main__':
     base='http://127.0.0.1:8000'
+    unique_email = f"teste+{int(time.time())}@example.com"
     print('Creating user...')
-    post(base + '/usuarios/', {'nome':'Teste','email':'teste@example.com','senha':'senha123','situacao_atual':'DESEMPREGADO'})
+    post(base + '/usuarios/', {'nome':'Teste','email':unique_email,'senha':'senha123','situacao_atual':'DESEMPREGADO'})
     print('\nInitial gamificacao:')
     get(base + '/gamificacao/1')
     print('\nSimular CLT...')

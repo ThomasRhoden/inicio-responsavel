@@ -9,6 +9,8 @@ from app.schemas.usuario import UsuarioCreate, UsuarioRead
 
 router = APIRouter()
 
+# Rotas para gerenciamento de usuários.
+# O endpoint para criar usuário recebe dados validados pelo pydantic e persiste no banco.
 @router.post("/", response_model=UsuarioRead)
 def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
     senha_hash = hashpw(usuario.senha.encode("utf-8"), gensalt()).decode("utf-8")
@@ -25,11 +27,14 @@ def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(novo_usuario)
     except IntegrityError:
+        # Se o email já existe no banco, retornamos erro 400 para a API.
         db.rollback()
         raise HTTPException(status_code=400, detail="Email já cadastrado")
 
     return UsuarioRead.from_orm(novo_usuario)
 
+# Endpoint para buscar um usuário pelo id.
+# Retorna 404 se o usuário não existir.
 @router.get("/{usuario_id}", response_model=UsuarioRead)
 def obter_usuario(usuario_id: int, db: Session = Depends(get_db)):
     usuario = db.get(Usuario, usuario_id)

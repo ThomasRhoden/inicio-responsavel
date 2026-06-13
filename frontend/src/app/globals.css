@@ -2,52 +2,162 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Estilos globais do frontend com tema escuro e visual RPG. */
 html {
   scroll-behavior: smooth;
 }
 
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, sans-serif;
+  color: #e2e8f0;
+  background: radial-gradient(circle at top left, rgba(99,102,241,0.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(34,211,238,0.14), transparent 28%),
+    #081124;
+  --surface: rgba(15, 23, 42, 0.96);
+  --surface-alt: rgba(20, 27, 48, 0.92);
+  --muted: #64748b;
+  --accent: #38bdf8;
+  --accent-strong: #facc15;
+  --accent-soft: rgba(56,189,248,0.12);
+}
+
 body {
   margin: 0;
+  min-height: 100%;
   font-family: Inter, system-ui, sans-serif;
-  background: #f8fafc;
-  color: #0f172a;
+  background: transparent;
+  color: #e2e8f0;
 }
 
-:root{
-  --brand-500: #0f766e;
-  --accent-400: #f59e0b;
-  --muted-100: #f1f5f9;
+/* Reset e configuração de box model para consistência. */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-.badge-pill{
-  display:inline-flex;
-  align-items:center;
-  gap:0.5rem;
-  padding:0.35rem 0.8rem;
-  border-radius:9999px;
-  font-weight:600;
-  font-size:0.9rem;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-.badge-locked{
-  background:var(--muted-100);
-  color:#64748b;
+button, input, textarea, select {
+  font: inherit;
 }
 
-.badge-unlocked{
-  background:linear-gradient(90deg,var(--accent-400),#f97316);
-  color:white;
-  box-shadow:0 6px 18px rgba(249,115,22,0.18);
-  transform:translateY(0);
-  transition:transform 250ms ease, box-shadow 250ms ease;
+h1, h2, h3, h4, h5, h6, p, ul {
+  margin: 0;
+  padding: 0;
 }
 
-.badge-unlocked:hover{
-  transform:translateY(-4px);
-  box-shadow:0 12px 28px rgba(249,115,22,0.2);
+/* Estilos para badges de conquista. */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-.prog-bar-outer{background:var(--muted-100);border-radius:9999px;height:0.6rem;overflow:hidden}
-.prog-bar-inner{background:var(--brand-500);height:100%;transition: width 300ms ease}
+.badge-locked {
+  background: rgba(148,163,184,0.16);
+  color: #94a3b8;
+}
 
-.soft-card{border-radius:1rem;background:white;border:1px solid #e6edf0;padding:1rem}
+.badge-unlocked {
+  background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+  color: white;
+  box-shadow: 0 6px 18px rgba(56,189,248,0.18);
+}
+
+/* Cartão principal de gamificação com visual RPG. */
+.rpg-card {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(10, 16, 32, 0.95));
+  border: 1px solid rgba(56,189,248,0.12);
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.rpg-card-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.rpg-avatar-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, rgba(56,189,248,0.14), rgba(59,130,246,0.12));
+  border-radius: 1.75rem;
+  min-height: 100%;
+}
+
+.rpg-avatar-ring {
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.14), transparent 55%);
+}
+
+.rpg-avatar {
+  width: 120px;
+  height: 120px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.rpg-avatar-label {
+  text-align: center;
+}
+
+.rpg-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.rpg-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.rpg-xp-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #c7d2fe;
+  font-size: 0.92rem;
+}
+
+/* Barra de progresso de XP usada no painel de gamificação. */
+.xp-meter {
+  width: 100%;
+  height: 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-top: 0.55rem;
+}
+
+.xp-meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #facc15, #38bdf8);
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 900px) {
+  .rpg-card-inner {
+    grid-template-columns: 1fr;
+  }
+}

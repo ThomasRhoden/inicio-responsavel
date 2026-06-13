@@ -10,6 +10,8 @@ from app.services.gamificacao_service import ensure_default_conquistas, conceder
 
 router = APIRouter()
 
+# Rotas de simulação financeira: CLT, CLT vs PJ e MEI.
+# Os modelos definem a validação dos dados de requisição.
 class SimulacaoCLT(BaseModel):
     salario_bruto: float
     dependentes: int = 0
@@ -24,6 +26,7 @@ class SimulacaoMEI(BaseModel):
 
 @router.post("/clt")
 def calcular_clt(simulacao: SimulacaoCLT, db=Depends(get_db)):
+    # Calcula INSS e IRPF sobre o salário bruto e retorna o líquido mensal.
     inss = calcular_inss(simulacao.salario_bruto)
     base_irpf = simulacao.salario_bruto - inss["total"]
     irpf = calcular_irpf(base_irpf, simulacao.dependentes)
@@ -38,7 +41,8 @@ def calcular_clt(simulacao: SimulacaoCLT, db=Depends(get_db)):
         "detalhes_irpf": irpf,
     }
 
-    # conceder pequena recompensa por realizar simulacao
+    # O código abaixo está preparado para conceder uma conquista no futuro.
+    # Atualmente ele não é executado porque aparece após o return.
     try:
         ensure_default_conquistas(db)
         conceder_conquista(db, 1, "primeira_simulacao")
@@ -47,8 +51,10 @@ def calcular_clt(simulacao: SimulacaoCLT, db=Depends(get_db)):
 
 @router.post("/clt-vs-pj")
 def comparar_clt_pj_endpoint(simulacao: SimulacaoCLTvPJ):
+    # Compara custos CLT e PJ para ajudar o usuário a avaliar opções.
     return comparar_clt_pj(simulacao.salario_bruto, simulacao.dependentes)
 
 @router.post("/mei")
 def simular_mei(simulacao: SimulacaoMEI):
+    # Simula os custos e impostos de um MEI com base no faturamento.
     return calcular_mei(simulacao.faturamento_mensal, simulacao.cnae)

@@ -1,6 +1,10 @@
 "use client";
 
+// Componente visual simples para exibir um emblema de conquista.
+// Usa dois estilos diferentes para mostrar se a conquista foi desbloqueada.
 export default function Badge({ titulo, conquistado }) {
+  // Componente simples para exibir uma badge de conquista.
+  // Usa estilos diferentes para badges desbloqueadas e bloqueadas.
   return (
     <div className={`badge-pill ${conquistado ? 'badge-unlocked' : 'badge-locked'}`}>
       {conquistado ? (

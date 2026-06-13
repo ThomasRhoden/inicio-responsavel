@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from app.core.database import Base
 from datetime import datetime
 
-
+# Modelo que define uma conquista disponível no sistema.
 class Conquista(Base):
     __tablename__ = "conquistas"
 
@@ -14,7 +14,7 @@ class Conquista(Base):
     pontos = Column(Integer, nullable=False, default=0)
     criado_em = Column(DateTime, default=datetime.utcnow)
 
-
+# Modelo que faz a relação de conquistas concedidas a usuários.
 class UsuarioConquista(Base):
     __tablename__ = "usuario_conquistas"
 

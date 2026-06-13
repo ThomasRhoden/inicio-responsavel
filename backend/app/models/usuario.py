@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Enum, DECIMAL, DateTime, func
 
 from ..core.database import Base
 
+# Modelo do usuário no banco de dados.
 class Usuario(Base):
     __tablename__ = "usuarios"
 
