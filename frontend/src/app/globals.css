@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+:root{
+  --brand-500: #0f766e;
+  --accent-400: #f59e0b;
+  --muted-100: #f1f5f9;
+}
+
+.badge-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  padding:0.35rem 0.8rem;
+  border-radius:9999px;
+  font-weight:600;
+  font-size:0.9rem;
+}
+
+.badge-locked{
+  background:var(--muted-100);
+  color:#64748b;
+}
+
+.badge-unlocked{
+  background:linear-gradient(90deg,var(--accent-400),#f97316);
+  color:white;
+  box-shadow:0 6px 18px rgba(249,115,22,0.18);
+  transform:translateY(0);
+  transition:transform 250ms ease, box-shadow 250ms ease;
+}
+
+.badge-unlocked:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 28px rgba(249,115,22,0.2);
+}
+
+.prog-bar-outer{background:var(--muted-100);border-radius:9999px;height:0.6rem;overflow:hidden}
+.prog-bar-inner{background:var(--brand-500);height:100%;transition: width 300ms ease}
+
+.soft-card{border-radius:1rem;background:white;border:1px solid #e6edf0;padding:1rem}
