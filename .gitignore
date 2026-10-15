@@ -14,3 +14,11 @@ node_modules/
 
 # Logs
 *.log
+*.pyc
+.venv/
+.env
+*.sqlite3
+out/
+out.json
+out.html
+frontend/out.html
